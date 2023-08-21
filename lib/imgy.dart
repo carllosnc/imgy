@@ -27,6 +27,8 @@ class Imgy extends StatefulWidget {
   final double height;
   final double borderWidth;
   final double rounded;
+  final bool canShare;
+  final bool canSave;
 
   const Imgy({
     super.key,
@@ -40,6 +42,8 @@ class Imgy extends StatefulWidget {
     this.borderWidth = 0,
     this.width = 100,
     this.height = 100,
+    this.canShare = true,
+    this.canSave = true,
   });
 
   @override
@@ -161,6 +165,7 @@ class _ImgyState extends State<Imgy> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
+              color: Colors.red,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -173,8 +178,9 @@ class _ImgyState extends State<Imgy> {
               spacing: 10,
               children: [
                 if (sharingImage == true) loading(),
-                if (sharingImage == false)
+                if (widget.canShare && (sharingImage == false))
                   IconButton(
+                    color: Colors.green,
                     onPressed: () {
                       shareImage();
                     },
@@ -184,8 +190,9 @@ class _ImgyState extends State<Imgy> {
                     ),
                   ),
                 if (imageStatus == ImageStatus.saving) loading(),
-                if (imageStatus == ImageStatus.notSaved)
+                if (widget.canSave && (imageStatus == ImageStatus.notSaved))
                   IconButton(
+                    color: Colors.green,
                     onPressed: () {
                       saveImage();
                     },
