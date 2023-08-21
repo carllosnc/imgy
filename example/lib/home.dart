@@ -49,7 +49,6 @@ class HomePage extends StatelessWidget {
                 "A expressão Lorem ipsum em design gráfico e editoração",
             src: images[index],
             fullSrc: images[index],
-            //random placeholder color with primary color as fallback
             placeholderColor:
                 Colors.primaries[Random().nextInt(Colors.primaries.length - 1)],
           );
