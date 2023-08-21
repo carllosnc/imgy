@@ -1,12 +1,20 @@
 library imgy;
 
-//import 'dart:math';
+import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-//import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-// import 'dart:ui' as ui;
+import 'package:share_plus/share_plus.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
+enum ImageStatus {
+  saving,
+  saved,
+  notSaved,
+}
 
 class Imgy extends StatefulWidget {
   final String src;
@@ -41,6 +49,10 @@ class Imgy extends StatefulWidget {
 class _ImgyState extends State<Imgy> {
   final GlobalKey globalKey = GlobalKey();
 
+  ImageStatus imageStatus = ImageStatus.notSaved;
+  bool sharingImage = false;
+  late StateSetter _setState;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -70,7 +82,7 @@ class _ImgyState extends State<Imgy> {
           child: ColoredBox(
             color: widget.placeholderColor,
             child: FadeInImage(
-              fadeInDuration: const Duration(milliseconds: 200),
+              fadeInDuration: const Duration(milliseconds: 400),
               placeholder: MemoryImage(kTransparentImage),
               fit: BoxFit.cover,
               width: widget.width,
@@ -89,13 +101,21 @@ class _ImgyState extends State<Imgy> {
     return showDialog(
       barrierColor: Colors.black.withOpacity(0.8),
       context: context,
-      builder: (BuildContext context) {
-        return Stack(
-          children: [
-            imagePreview(),
-            imageHeader(context),
-            if (widget.description != null) imageDescription(context),
-          ],
+      builder: (
+        BuildContext context,
+      ) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            _setState = setState;
+
+            return Stack(
+              children: [
+                imagePreview(),
+                imageHeader(context),
+                if (widget.description != null) imageDescription(context),
+              ],
+            );
+          },
         );
       },
     );
@@ -152,25 +172,53 @@ class _ImgyState extends State<Imgy> {
             Wrap(
               spacing: 10,
               children: [
-                IconButton(
-                  onPressed: () {
-                    //shareImage();
-                  },
-                  icon: const Icon(
-                    Icons.share_outlined,
-                    color: Colors.white,
+                if (sharingImage == true) loading(),
+                if (sharingImage == false)
+                  IconButton(
+                    onPressed: () {
+                      shareImage();
+                    },
+                    icon: const Icon(
+                      Icons.share,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.download_outlined,
-                    color: Colors.white,
+                if (imageStatus == ImageStatus.saving) loading(),
+                if (imageStatus == ImageStatus.notSaved)
+                  IconButton(
+                    onPressed: () {
+                      saveImage();
+                    },
+                    icon: const Icon(
+                      Icons.download,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
+                if (imageStatus == ImageStatus.saved)
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                  ),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  IconButton loading() {
+    return IconButton(
+      onPressed: () {},
+      icon: const SizedBox(
+        width: 18,
+        height: 18,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
         ),
       ),
     );
@@ -200,41 +248,67 @@ class _ImgyState extends State<Imgy> {
     );
   }
 
-  // String randomString(int length) {
-  //   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-  //   final rnd = Random(DateTime.now().millisecondsSinceEpoch);
-  //   final buf = StringBuffer();
+  String randomString(int length) {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    final rnd = Random(DateTime.now().millisecondsSinceEpoch);
+    final buf = StringBuffer();
 
-  //   for (var x = 0; x < length; x++) {
-  //     buf.write(chars[rnd.nextInt(chars.length)]);
-  //   }
+    for (var x = 0; x < length; x++) {
+      buf.write(chars[rnd.nextInt(chars.length)]);
+    }
 
-  //   return buf.toString();
-  // }
+    return buf.toString();
+  }
 
-  // shareImage() async {
-  //   var result = await captureWidget();
+  shareImage() async {
+    _setState(() {
+      sharingImage = true;
+    });
 
-  //   Share.shareXFiles([
-  //     XFile.fromData(
-  //       result,
-  //       name: randomString(10),
-  //       mimeType: 'image/png',
-  //     )
-  //   ]);
-  // }
+    var result = await captureWidget();
 
-  // Future<Uint8List> captureWidget() async {
-  //   final RenderRepaintBoundary boundary =
-  //       globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    await Share.shareXFiles([
+      XFile.fromData(
+        result,
+        name: randomString(10),
+        mimeType: 'image/png',
+      )
+    ]);
 
-  //   final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    _setState(() {
+      sharingImage = false;
+    });
+  }
 
-  //   final ByteData? byteData =
-  //       await image.toByteData(format: ui.ImageByteFormat.png);
+  Future<Uint8List> captureWidget() async {
+    final RenderRepaintBoundary boundary =
+        globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
 
-  //   final Uint8List pngBytes = byteData!.buffer.asUint8List();
+    final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
 
-  //   return pngBytes;
-  // }
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+
+    final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    return pngBytes;
+  }
+
+  saveImage() async {
+    _setState(() {
+      imageStatus = ImageStatus.saving;
+    });
+
+    var result = await captureWidget();
+
+    await ImageGallerySaver.saveImage(
+      result,
+      name: randomString(7),
+      quality: 100,
+    );
+
+    _setState(() {
+      imageStatus = ImageStatus.saved;
+    });
+  }
 }
