@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:imgy/imgy.dart';
 
@@ -38,16 +40,18 @@ class HomePage extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 3,
-        crossAxisSpacing: 1,
+        crossAxisSpacing: 3,
         padding: const EdgeInsets.all(0),
-        mainAxisSpacing: 1,
+        mainAxisSpacing: 3,
         children: List.generate(images.length, (index) {
           return Imgy(
             description:
                 "A expressão Lorem ipsum em design gráfico e editoração",
             src: images[index],
             fullSrc: images[index],
-            placeholderColor: Colors.black.withOpacity(0.3),
+            //random placeholder color with primary color as fallback
+            placeholderColor:
+                Colors.primaries[Random().nextInt(Colors.primaries.length - 1)],
           );
         }),
       ),
