@@ -245,7 +245,7 @@ class _ImgyState extends State<Imgy> {
             child: RepaintBoundary(
               key: globalKey,
               child: Image.network(
-                widget.src,
+                widget.fullSrc,
                 fit: BoxFit.cover,
               ),
             ),
