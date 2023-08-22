@@ -40,10 +40,13 @@ extension ImgyActions on ImgyState {
       imageStatus = ImageStatus.saving;
     });
 
-    var result = await captureWidget();
+    Uint8List bytes = (await NetworkAssetBundle(Uri.parse(widget.fullSrc))
+            .load(widget.fullSrc))
+        .buffer
+        .asUint8List();
 
     await ImageGallerySaver.saveImage(
-      result,
+      bytes,
       name: randomString(7),
       quality: 100,
     );
