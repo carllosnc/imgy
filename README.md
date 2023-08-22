@@ -27,12 +27,12 @@ dependencies:
 ```dart
 import 'package:imgy/imgy.dart';
 
-var source = "[image_url]"
-var fullSource = "[full_image_url]"
+var previewImage = "prevew image address"
+var fullImage = "full image address"
 
 Imgy(
-  src: source,
-  fullSrc: fullSource,
+  src: previewImage,
+  fullSrc: fullImage,
   enableFullScreen: true,
   description: "Image description",
   placeholderColor: Colors.red
