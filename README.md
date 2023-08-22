@@ -1,6 +1,11 @@
 # 🌇 IMGY
 
-Flutter network image component
+<center>
+  <p>Flutter network image component<p>
+  <img src="./example.gif" />
+</center>
+
+---
 
 ### Install
 
