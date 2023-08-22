@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:imgy/imgy.dart';
 
@@ -61,8 +63,10 @@ class HomePage extends StatelessWidget {
               (e) => Imgy(
                 src: e["preview"]!,
                 fullSrc: e["full"]!,
+                enableFullScreen: true,
                 description: "Image description",
-                placeholderColor: Colors.grey,
+                placeholderColor:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
               ),
             )
             .toList(),
