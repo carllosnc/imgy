@@ -46,20 +46,20 @@ Imgy(
 
 ## Properties
 
-| Name               |  Type  |                             Description |
-| ------------------ | :----: | --------------------------------------: |
-| `src`              | String |                    preview image source |
-| `fullSrc`          | String |                full screen image source |
-| `enableFullScreen` |  bool  |                 enable full screen view |
-| `description`      | String |                       image description |
+| Name               | Type   | Description                             |
+| ------------------ | ------ | --------------------------------------- |
+| `src`              | String | preview image source                    |
+| `fullSrc`          | String | full screen image source                |
+| `enableFullScreen` | bool   | enable full screen view                 |
+| `description`      | String | image description                       |
 | `placeholderColor` | Color  | placeholder color when image is loading |
-| `padding`          | double |                       container padding |
-| `rounded`          | double |                           border radius |
-| `width`            | double |                             image width |
-| `height`           | double |                            image height |
-| `borderWidth`      | double |                  container border width |
-| `canSave`          |  bool  |        support to save image to gallery |
-| `canShare`         |  bool  |                  support to share image |
+| `padding`          | double | container padding                       |
+| `rounded`          | double | border radius                           |
+| `width`            | double | image width                             |
+| `height`           | double | image height                            |
+| `borderWidth`      | double | container border width                  |
+| `canSave`          | bool   | support to save image to gallery        |
+| `canShare`         | bool   | support to share image                  |
 
 ---
 
