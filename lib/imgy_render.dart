@@ -12,6 +12,7 @@ extension ImgyRender on ImgyState {
         widget.rounded.toDouble() > 0 ? internalRounded + 6 : 0;
 
     return GestureDetector(
+      key: const Key('imgy_preview_container'),
       onTap: () {
         if (widget.enableFullScreen) {
           openImage(context);
@@ -31,6 +32,7 @@ extension ImgyRender on ImgyState {
           child: ColoredBox(
             color: widget.placeholderColor,
             child: FadeInImage(
+              key: const Key('imgy_preview_image'),
               fadeInDuration: const Duration(milliseconds: 400),
               placeholder: MemoryImage(kTransparentImage),
               fit: BoxFit.cover,

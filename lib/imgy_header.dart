@@ -3,6 +3,7 @@ part of './imgy.dart';
 extension ImgyHeader on ImgyState {
   Positioned imageHeader(BuildContext context) {
     return Positioned(
+      key: const Key('imgy_full_screen_header'),
       top: 0,
       left: 0,
       child: Container(
@@ -12,6 +13,7 @@ extension ImgyHeader on ImgyState {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
+              key: const Key('imgy_full_screen_close_button'),
               color: Colors.red,
               onPressed: () {
                 Navigator.pop(context);
@@ -27,6 +29,7 @@ extension ImgyHeader on ImgyState {
                 if (sharingImage == true) loading(),
                 if (widget.canShare && (sharingImage == false))
                   IconButton(
+                    key: const Key('imgy_full_screen_share_button'),
                     color: Colors.green,
                     onPressed: () {
                       shareImage();
@@ -39,6 +42,7 @@ extension ImgyHeader on ImgyState {
                 if (imageStatus == ImageStatus.saving) loading(),
                 if (widget.canSave && (imageStatus == ImageStatus.notSaved))
                   IconButton(
+                    key: const Key('imgy_full_screen_download_button'),
                     color: Colors.green,
                     onPressed: () {
                       saveImage();
@@ -50,6 +54,7 @@ extension ImgyHeader on ImgyState {
                   ),
                 if (imageStatus == ImageStatus.saved)
                   IconButton(
+                    key: const Key('imgy_full_screen_saved_icon'),
                     onPressed: () {},
                     icon: const Icon(
                       Icons.check,
