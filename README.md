@@ -1,10 +1,20 @@
-# IMGY
+# 🌇 IMGY
 
-Flutter image component
+Flutter network image component
+
+### Install
+
+`pubspec.yml`
+```yml
+dependencies:
+  imgy:
+    git:
+      url: https://github.com/C4co/imgy.git
+```
 
 ### Features
  - Preview and full screen
- - Fade effect
+ - Fade in effect
  - Description
  - Border
  - Padding
