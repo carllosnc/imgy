@@ -37,6 +37,7 @@ class Imgy extends StatefulWidget {
   final double rounded;
   final bool canShare;
   final bool canSave;
+  final bool enableFullScreen;
 
   const Imgy({
     super.key,
@@ -52,6 +53,7 @@ class Imgy extends StatefulWidget {
     this.height = 100,
     this.canShare = true,
     this.canSave = true,
+    this.enableFullScreen = false,
   });
 
   @override

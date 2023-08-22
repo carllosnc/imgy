@@ -13,7 +13,9 @@ extension ImgyRender on ImgyState {
 
     return GestureDetector(
       onTap: () {
-        openImage(context);
+        if (widget.enableFullScreen) {
+          openImage(context);
+        }
       },
       child: Container(
         padding: EdgeInsets.all(widget.padding),
