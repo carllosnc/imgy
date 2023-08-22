@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:imgy/imgy.dart';
+import 'package:network_image_mock/network_image_mock.dart';
+
+void main() {
+  testWidgets(
+    'Check Imgy component initial render and interaction',
+    (tester) async {
+      var imageAddress =
+          "https://images.unsplash.com/photo-1682685797229-b2930538da47?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80";
+
+      await mockNetworkImagesFor(() async {
+        return tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Imgy(
+                src: imageAddress,
+                fullSrc: imageAddress,
+              ),
+            ),
+          ),
+        );
+      });
+
+      //just see image preview
+
+      expect(find.byKey(const Key('imgy_preview_container')), findsOneWidget);
+      expect(find.byKey(const Key('imgy_preview_image')), findsOneWidget);
+
+      //can't see full screen because it's hidden
+
+      expect(find.byKey(const Key('imgy_full_screen_container')), findsNothing);
+      expect(find.byKey(const Key('imgy_full_screen_image')), findsNothing);
+
+      //tap on image preview to open full screen
+
+      await tester.tap(find.byKey(const Key('imgy_preview_container')));
+      await tester.pumpAndSettle();
+
+      //can't see because {enableFullScreen} is false
+
+      expect(find.byKey(const Key('imgy_full_screen_container')), findsNothing);
+    },
+  );
+}
