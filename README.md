@@ -22,6 +22,23 @@ dependencies:
  - Sharing
  - Placeholder color
 
+### Usage
+
+```dart
+import 'package:imgy/imgy.dart';
+
+var source = "[image_url]"
+var fullSource = "[full_image_url]"
+
+Imgy(
+  src: source,
+  fullSrc: fullSource,
+  enableFullScreen: true,
+  description: "Image description",
+  placeholderColor: Colors.red
+)
+```
+
 ---
 
 Carlos Costa 🖼 2023
