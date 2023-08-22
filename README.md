@@ -44,7 +44,7 @@ Imgy(
 )
 ```
 
-## Properties
+### Properties
 
 | Name               | Type   | Description                             |
 | ------------------ | ------ | --------------------------------------- |
