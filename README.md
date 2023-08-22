@@ -8,6 +8,8 @@ Flutter image component
  - Description
  - Border
  - Padding
+ - Save to gallery
+ - Sharing
  - Placeholder color
 
 ---
