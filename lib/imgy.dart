@@ -12,7 +12,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 part './imgy_actions.dart';
 part './imgy_utils.dart';
-part 'imgy_full_screen.dart';
+part './imgy_full_screen.dart';
 part './imgy_header.dart';
 part './imgy_modal.dart';
 part './imgy_render.dart';

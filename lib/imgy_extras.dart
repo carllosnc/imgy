@@ -3,6 +3,7 @@ part of './imgy.dart';
 extension ImgyExtras on ImgyState {
   Positioned imageDescription(BuildContext context) {
     return Positioned(
+      key: const Key('imgy_full_screen_description'),
       bottom: 0,
       left: 0,
       child: Container(
