@@ -37,7 +37,7 @@ extension ImgyRender on ImgyState {
               placeholder: MemoryImage(kTransparentImage),
               fit: BoxFit.cover,
               width: widget.width,
-              height: widget.width,
+              height: widget.height,
               image: NetworkImage(
                 widget.src,
               ),
