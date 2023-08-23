@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:imgy/imgy.dart';
 
@@ -51,25 +49,56 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Imgy Component'),
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 3,
-        ),
-        children: images
-            .map(
-              (e) => Imgy(
-                src: e["preview"]!,
-                fullSrc: e["full"]!,
-                enableFullScreen: true,
-                description: "Image description",
-                placeholderColor:
-                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
-              ),
-            )
-            .toList(),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text('Network images'),
+            ),
+          ),
+          SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Imgy(
+                  enableFullScreen: true,
+                  src: images[index]["preview"]!,
+                  fullSrc: images[index]["full"]!,
+                  width: 200,
+                  height: 200,
+                  placeholderColor: Colors.red,
+                );
+              },
+              childCount: images.length,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text('Asset images'),
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Imgy(
+                  enableFullScreen: true,
+                  src: "./assets/images/image-example.jpeg",
+                  fullSrc: "./assets/images/image-example.jpeg",
+                  width: 200,
+                  height: 200,
+                  placeholderColor: Colors.red,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

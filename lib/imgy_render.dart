@@ -1,6 +1,29 @@
 part of './imgy.dart';
 
 extension ImgyRender on ImgyState {
+  FadeInImage netWorkImage() {
+    return FadeInImage(
+      key: const Key('imgy_preview_image'),
+      fadeInDuration: const Duration(milliseconds: 300),
+      placeholder: MemoryImage(kTransparentImage),
+      fit: BoxFit.cover,
+      width: widget.width,
+      height: widget.height,
+      image: NetworkImage(
+        widget.src,
+      ),
+    );
+  }
+
+  Image assetImage() {
+    return Image.asset(
+      widget.src,
+      fit: BoxFit.cover,
+      width: widget.width,
+      height: widget.height,
+    );
+  }
+
   Widget render() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -31,17 +54,7 @@ extension ImgyRender on ImgyState {
           borderRadius: BorderRadius.circular(internalRounded),
           child: ColoredBox(
             color: widget.placeholderColor,
-            child: FadeInImage(
-              key: const Key('imgy_preview_image'),
-              fadeInDuration: const Duration(milliseconds: 300),
-              placeholder: MemoryImage(kTransparentImage),
-              fit: BoxFit.cover,
-              width: widget.width,
-              height: widget.height,
-              image: NetworkImage(
-                widget.src,
-              ),
-            ),
+            child: checkSrc() ? netWorkImage() : assetImage(),
           ),
         ),
       ),

@@ -2,6 +2,12 @@ part of './imgy.dart';
 
 extension ImgyHeader on ImgyState {
   Positioned imageHeader(BuildContext context) {
+    bool saveCondition = checkFullSrc() &&
+        widget.canSave &&
+        (imageStatus == ImageStatus.notSaved);
+
+    bool shareCondition = widget.canShare && (sharingImage == false);
+
     return Positioned(
       top: 0,
       left: 0,
@@ -29,7 +35,7 @@ extension ImgyHeader on ImgyState {
                 spacing: 10,
                 children: [
                   if (sharingImage == true) loading(),
-                  if (widget.canShare && (sharingImage == false))
+                  if (shareCondition)
                     IconButton(
                       key: const Key('imgy_full_screen_share'),
                       color: Colors.green,
@@ -42,7 +48,7 @@ extension ImgyHeader on ImgyState {
                       ),
                     ),
                   if (imageStatus == ImageStatus.saving) loading(),
-                  if (widget.canSave && (imageStatus == ImageStatus.notSaved))
+                  if (saveCondition)
                     IconButton(
                       key: const Key('imgy_full_screen_download'),
                       color: Colors.green,

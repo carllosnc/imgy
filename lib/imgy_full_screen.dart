@@ -1,6 +1,24 @@
 part of './imgy.dart';
 
 extension ImgyFullScreen on ImgyState {
+  FadeInImage fullScreenNetWorkImage() {
+    return FadeInImage(
+      fadeInDuration: const Duration(milliseconds: 300),
+      image: NetworkImage(
+        widget.fullSrc,
+      ),
+      placeholder: MemoryImage(kTransparentImage),
+      fit: BoxFit.cover,
+    );
+  }
+
+  fullScreenAssetImage() {
+    return Image.asset(
+      widget.fullSrc,
+      fit: BoxFit.cover,
+    );
+  }
+
   Positioned imagePreview() {
     return Positioned.fill(
       child: Stack(
@@ -32,14 +50,9 @@ extension ImgyFullScreen on ImgyState {
                   key: globalKey,
                   child: Container(
                     color: Colors.black,
-                    child: FadeInImage(
-                      fadeInDuration: const Duration(milliseconds: 300),
-                      image: NetworkImage(
-                        widget.fullSrc,
-                      ),
-                      placeholder: MemoryImage(kTransparentImage),
-                      fit: BoxFit.cover,
-                    ),
+                    child: checkFullSrc()
+                        ? fullScreenNetWorkImage()
+                        : fullScreenAssetImage(),
                   ),
                 ),
               ),
