@@ -33,6 +33,7 @@ extension ImgyFullScreen on ImgyState {
                   child: Container(
                     color: Colors.black,
                     child: FadeInImage(
+                      fadeInDuration: const Duration(milliseconds: 300),
                       image: NetworkImage(
                         widget.fullSrc,
                       ),

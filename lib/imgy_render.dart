@@ -33,7 +33,7 @@ extension ImgyRender on ImgyState {
             color: widget.placeholderColor,
             child: FadeInImage(
               key: const Key('imgy_preview_image'),
-              fadeInDuration: const Duration(milliseconds: 400),
+              fadeInDuration: const Duration(milliseconds: 300),
               placeholder: MemoryImage(kTransparentImage),
               fit: BoxFit.cover,
               width: widget.width,
