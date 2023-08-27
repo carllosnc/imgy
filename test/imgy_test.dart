@@ -95,4 +95,32 @@ void main() {
       expect(find.byKey(const Key('imgy_full_screen_image')), findsNothing);
     },
   );
+
+  testWidgets("Check render for asset image", (widgetTester) async {
+    await widgetTester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: Imgy(
+            src: "./example/assets/images/image-example.jpeg",
+            fullSrc: "./example/assets/images/image-example.jpeg",
+            enableFullScreen: true,
+          ),
+        ),
+      ),
+    );
+
+    //just see image preview
+
+    expect(find.byKey(const Key('imgy_preview_container')), findsOneWidget);
+    expect(find.byKey(const Key('imgy_preview_asset')), findsOneWidget);
+
+    //tap on image preview to open full screen
+
+    await widgetTester.tap(find.byKey(const Key('imgy_preview_container')));
+    await widgetTester.pump();
+
+    //check if cant see download button
+
+    expect(find.byKey(const Key('imgy_full_screen_download')), findsNothing);
+  });
 }

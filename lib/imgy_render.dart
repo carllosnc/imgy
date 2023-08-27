@@ -17,6 +17,7 @@ extension ImgyRender on ImgyState {
 
   Image assetImage() {
     return Image.asset(
+      key: const Key('imgy_preview_asset'),
       widget.src,
       fit: BoxFit.cover,
       width: widget.width,
