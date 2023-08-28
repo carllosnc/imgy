@@ -27,6 +27,7 @@ void main() {
 
       expect(find.byKey(const Key('imgy_preview_container')), findsOneWidget);
       expect(find.byKey(const Key('imgy_preview_image')), findsOneWidget);
+      expect(find.byKey(const Key('imgy_gesture_detector')), findsNothing);
 
       //can't see full screen because it's hidden
 
@@ -63,6 +64,9 @@ void main() {
           ),
         );
       });
+
+      //see image preview detector because {enableFullScreen} is true
+      expect(find.byKey(const Key('imgy_gesture_detector')), findsOneWidget);
 
       //tap on image preview to open full screen
 

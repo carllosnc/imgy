@@ -25,40 +25,47 @@ extension ImgyRender on ImgyState {
     );
   }
 
+  Container previewImage() {
+    double internalRounded = widget.rounded;
+    double externalRounded =
+        widget.rounded.toDouble() > 0 ? internalRounded + 6 : 0;
+
+    return Container(
+      key: const Key('imgy_preview_container'),
+      padding: EdgeInsets.all(widget.padding),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(externalRounded),
+        border: Border.all(
+          color: widget.borderColor,
+          width: widget.borderWidth,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(internalRounded),
+        child: ColoredBox(
+          color: widget.placeholderColor,
+          child: checkSrc() ? netWorkImage() : assetImage(),
+        ),
+      ),
+    );
+  }
+
   Widget render() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
 
-    double internalRounded = widget.rounded;
-    double externalRounded =
-        widget.rounded.toDouble() > 0 ? internalRounded + 6 : 0;
-
-    return GestureDetector(
-      key: const Key('imgy_preview_container'),
-      onTap: () {
-        if (widget.enableFullScreen) {
+    if (widget.enableFullScreen) {
+      return GestureDetector(
+        key: const Key('imgy_gesture_detector'),
+        onTap: () {
           openImage(context);
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.all(widget.padding),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(externalRounded),
-          border: Border.all(
-            color: widget.borderColor,
-            width: widget.borderWidth,
-          ),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(internalRounded),
-          child: ColoredBox(
-            color: widget.placeholderColor,
-            child: checkSrc() ? netWorkImage() : assetImage(),
-          ),
-        ),
-      ),
-    );
+        },
+        child: previewImage(),
+      );
+    }
+
+    return previewImage();
   }
 }
