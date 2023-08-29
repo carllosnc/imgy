@@ -1,4 +1,5 @@
-# 🌇 IMGY
+# 🌇 IMGY [![Imgy](https://github.com/C4co/imgy/actions/workflows/dart.yml/badge.svg)](https://github.com/C4co/imgy/actions/workflows/dart.yml)
+
 
 <center>
   <p>Flutter image component<p>
