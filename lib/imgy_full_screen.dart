@@ -1,14 +1,26 @@
 part of './imgy.dart';
 
 extension ImgyFullScreen on ImgyState {
-  FadeInImage fullScreenNetWorkImage() {
-    return FadeInImage(
-      fadeInDuration: const Duration(milliseconds: 300),
-      image: NetworkImage(
-        widget.fullSrc,
-      ),
-      placeholder: MemoryImage(kTransparentImage),
+  Image fullScreenNetWorkImage() {
+    return Image.network(
+      widget.fullSrc,
       fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+
+        return Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.white,
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
     );
   }
 
@@ -24,18 +36,6 @@ extension ImgyFullScreen on ImgyState {
       child: Stack(
         key: const Key('imgy_full_screen_container'),
         children: [
-          const Positioned.fill(
-            child: Center(
-              child: SizedBox(
-                width: 25,
-                height: 25,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
           Center(
             child: Container(
               key: const Key('imgy_full_screen_image'),
@@ -46,13 +46,21 @@ extension ImgyFullScreen on ImgyState {
                 clipBehavior: Clip.none,
                 maxScale: 5.0,
                 minScale: 1.0,
-                child: RepaintBoundary(
-                  key: globalKey,
-                  child: Container(
-                    color: Colors.black,
-                    child: checkFullSrc()
-                        ? fullScreenNetWorkImage()
-                        : fullScreenAssetImage(),
+                child: GestureDetector(
+                  key: const Key('imgy_full_screen_gesture'),
+                  onTap: () {
+                    if (widget.tapImageToClose) {
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: RepaintBoundary(
+                    key: globalKey,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: checkFullSrc()
+                          ? fullScreenNetWorkImage()
+                          : fullScreenAssetImage(),
+                    ),
                   ),
                 ),
               ),
