@@ -47,20 +47,22 @@ Imgy(
 
 ### Properties
 
-| Name               | Type     | Description                             |
-| ------------------ | -------- | --------------------------------------- |
-| `src`              | `String` | preview image source                    |
-| `fullSrc`          | `String` | full screen image source                |
-| `enableFullScreen` | `bool`   | enable full screen view                 |
-| `description`      | `String` | image description                       |
-| `placeholderColor` | `Color`  | placeholder color when image is loading |
-| `padding`          | `double` | container padding                       |
-| `rounded`          | `double` | border radius                           |
-| `width`            | `double` | image width                             |
-| `height`           | `double` | image height                            |
-| `borderWidth`      | `double` | container border width                  |
-| `canSave`          | `bool`   | support to save image to gallery        |
-| `canShare`         | `bool`   | support to share image                  |
+| Name                | Type     | Default              | Description                               |
+| ------------------- | -------- | -------------------- | ----------------------------------------- |
+| `src`               | `String` | `null`               | preview image source                      |
+| `fullSrc`           | `String` | `null`               | full screen image source                  |
+| `enableFullScreen`  | `bool`   | `false`              | enable full screen view                   |
+| `description`       | `String` | `null`               | image description                         |
+| `placeholderColor`  | `Color`  | `Colors.transparent` | placeholder color when image is loading   |
+| `padding`           | `double` | `0`                  | container padding                         |
+| `rounded`           | `double` | `0`                  | border radius                             |
+| `width`             | `double` | `100`                | image width                               |
+| `height`            | `double` | `100`                | image height                              |
+| `borderWidth`       | `double` | `0`                  | container border width                    |
+| `borderColor`       | `double` | `0`                  | container border color                    |
+| `canSave`           | `bool`   | `true`               | support to save image to gallery          |
+| `canShare`          | `bool`   | `true`               | support to share image                    |
+| `tapOnImageToClose` | `bool`   | `true`               | close fullscreen view image when tap over |
 
 ---
 
