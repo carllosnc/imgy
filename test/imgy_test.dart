@@ -127,4 +127,37 @@ void main() {
 
     expect(find.byKey(const Key('imgy_full_screen_download')), findsNothing);
   });
+
+  //check the close when image is tapped
+  testWidgets("Check close when image is tapped", (widgetTester) async {
+    await mockNetworkImagesFor(() async {
+      return widgetTester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              child: Imgy(
+                src: imageAddress,
+                fullSrc: imageAddress,
+                enableFullScreen: true,
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+
+    //tap on image preview to open full screen
+
+    await widgetTester.tap(find.byKey(const Key('imgy_preview_container')));
+    await widgetTester.pump();
+
+    //can see full screen gesture
+
+    expect(find.byKey(const Key('imgy_full_screen_gesture')), findsOneWidget);
+
+    //tap on image to close full screen
+
+    await widgetTester.tap(find.byKey(const Key('imgy_full_screen_gesture')));
+    await widgetTester.pump();
+  });
 }
