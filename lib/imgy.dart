@@ -38,6 +38,7 @@ class Imgy extends StatefulWidget {
   final bool canShare;
   final bool canSave;
   final bool enableFullScreen;
+  final bool tapImageToClose;
 
   const Imgy({
     super.key,
@@ -54,6 +55,7 @@ class Imgy extends StatefulWidget {
     this.canShare = true,
     this.canSave = true,
     this.enableFullScreen = false,
+    this.tapImageToClose = true,
   });
 
   @override
