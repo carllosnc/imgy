@@ -1,24 +1,8 @@
 # 🌇 IMGY [![Imgy](https://github.com/C4co/imgy/actions/workflows/dart.yml/badge.svg)](https://github.com/C4co/imgy/actions/workflows/dart.yml)
 
+<img align="right" src="./example.gif" width={350} />
 
-<center>
-  <p>Flutter image component<p>
-  <img src="./example.gif" width={350} />
-</center>
-
----
-
-### Install
-
-`pubspec.yml`
-```yml
-dependencies:
-  imgy:
-    git:
-      url: https://github.com/C4co/imgy.git
-```
-
-### Features
+## Features
  - Preview and full screen
  - Fade in effect
  - Description
@@ -28,7 +12,17 @@ dependencies:
  - Sharing
  - Placeholder color
 
-### Usage
+## Install
+
+`pubspec.yml`
+```yml
+dependencies:
+  imgy:
+    git:
+      url: https://github.com/C4co/imgy.git
+```
+
+## Usage
 
 ```dart
 import 'package:imgy/imgy.dart';
