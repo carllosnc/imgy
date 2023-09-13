@@ -1,6 +1,9 @@
 # 🌇 IMGY [![Imgy](https://github.com/C4co/imgy/actions/workflows/dart.yml/badge.svg)](https://github.com/C4co/imgy/actions/workflows/dart.yml)
 
-<img src="./example.gif" width={350} />
+
+| Example                                 |
+| --------------------------------------- |
+| <img src="./example.gif" width={350} /> |
 
 ## Features
  - Preview and full screen
