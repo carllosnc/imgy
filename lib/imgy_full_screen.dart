@@ -10,14 +10,10 @@ extension ImgyFullScreen on ImgyState {
           return child;
         }
 
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(
             strokeWidth: 2,
             color: Colors.white,
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
-                : null,
           ),
         );
       },
