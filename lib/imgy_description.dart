@@ -1,7 +1,18 @@
-part of './imgy.dart';
+import 'package:flutter/material.dart';
+import './imgy.dart';
 
-extension ImgyExtras on ImgyState {
-  Positioned imageDescription(BuildContext context) {
+class ImgyDescription extends StatelessWidget {
+  const ImgyDescription({
+    super.key,
+    required this.context,
+    required this.widget,
+  });
+
+  final BuildContext context;
+  final Imgy widget;
+
+  @override
+  Widget build(BuildContext context) {
     return Positioned(
       key: const Key('imgy_full_screen_description'),
       bottom: 0,
@@ -26,20 +37,6 @@ extension ImgyExtras on ImgyState {
             fontSize: 14,
             color: Colors.white,
           ),
-        ),
-      ),
-    );
-  }
-
-  IconButton loading() {
-    return IconButton(
-      onPressed: () {},
-      icon: const SizedBox(
-        width: 18,
-        height: 18,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: Colors.white,
         ),
       ),
     );
