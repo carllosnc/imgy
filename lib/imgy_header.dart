@@ -1,12 +1,52 @@
-part of './imgy.dart';
+import 'package:flutter/material.dart';
+import './imgy.dart';
+import './imgy_utils.dart';
 
-extension ImgyHeader on ImgyState {
-  Positioned imageHeader(BuildContext context) {
-    bool saveCondition = checkFullSrc() &&
+class ImgyLoading extends StatelessWidget {
+  const ImgyLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {},
+      icon: const SizedBox(
+        width: 18,
+        height: 18,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class ImgyHeader extends StatelessWidget {
+  final ImageStatus status;
+  final bool sharing;
+  final Function onSave;
+  final Function onShare;
+
+  const ImgyHeader({
+    super.key,
+    required this.widget,
+    required this.status,
+    required this.sharing,
+    required this.onSave,
+    required this.onShare,
+  });
+
+  final Imgy widget;
+
+  @override
+  Widget build(BuildContext context) {
+    bool saveCondition = checkFullSrc(widget.fullSrc) &&
         widget.canSave &&
-        (imageStatus == ImageStatus.notSaved);
+        (status == ImageStatus.notSaved);
 
-    bool shareCondition = widget.canShare && (sharingImage == false);
+    bool shareCondition = widget.canShare && (sharing == false);
 
     return Positioned(
       top: 0,
@@ -34,33 +74,33 @@ extension ImgyHeader on ImgyState {
               Wrap(
                 spacing: 10,
                 children: [
-                  if (sharingImage == true) loading(),
+                  if (sharing == true) const ImgyLoading(),
                   if (shareCondition)
                     IconButton(
                       key: const Key('imgy_full_screen_share'),
                       color: Colors.green,
                       onPressed: () {
-                        shareImage();
+                        onShare();
                       },
                       icon: const Icon(
                         Icons.share,
                         color: Colors.white,
                       ),
                     ),
-                  if (imageStatus == ImageStatus.saving) loading(),
+                  if (status == ImageStatus.saving) const ImgyLoading(),
                   if (saveCondition)
                     IconButton(
                       key: const Key('imgy_full_screen_download'),
                       color: Colors.green,
                       onPressed: () {
-                        saveImage();
+                        onSave();
                       },
                       icon: const Icon(
                         Icons.download,
                         color: Colors.white,
                       ),
                     ),
-                  if (imageStatus == ImageStatus.saved)
+                  if (status == ImageStatus.saved)
                     IconButton(
                       key: const Key('imgy_full_screen_check'),
                       onPressed: () {},

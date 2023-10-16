@@ -1,22 +1,18 @@
 library imgy;
 
 import 'dart:ui' as ui;
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:imgy/imgy_full_screen.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
-part './imgy_actions.dart';
-part './imgy_utils.dart';
-part './imgy_full_screen.dart';
-part './imgy_header.dart';
-part './imgy_modal.dart';
-part './imgy_render.dart';
-part './imgy_extras.dart';
+import 'imgy_utils.dart';
+import 'imgy_description.dart';
+import 'imgy_thumbnail.dart';
+import 'imgy_header.dart';
 
 enum ImageStatus {
   saving,
@@ -67,10 +63,111 @@ class ImgyState extends State<Imgy> {
 
   ImageStatus imageStatus = ImageStatus.notSaved;
   bool sharingImage = false;
-  late StateSetter _setState;
+
+  shareImage() async {
+    setState(() {
+      sharingImage = true;
+    });
+
+    var result = await captureWidget();
+
+    await Share.shareXFiles([
+      XFile.fromData(
+        result,
+        name: randomString(10),
+        mimeType: 'image/png',
+      )
+    ]);
+
+    setState(() {
+      sharingImage = false;
+    });
+  }
+
+  Future<Uint8List> captureWidget() async {
+    final RenderRepaintBoundary boundary =
+        globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+
+    final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+
+    final Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    return pngBytes;
+  }
+
+  saveImage() async {
+    setState(() {
+      imageStatus = ImageStatus.saving;
+    });
+
+    Uint8List bytes = (await NetworkAssetBundle(Uri.parse(widget.fullSrc))
+            .load(widget.fullSrc))
+        .buffer
+        .asUint8List();
+
+    await ImageGallerySaver.saveImage(
+      bytes,
+      name: randomString(7),
+      quality: 100,
+    );
+
+    setState(() {
+      imageStatus = ImageStatus.saved;
+    });
+  }
+
+  Future<dynamic> openImage(BuildContext context) {
+    return showDialog(
+      barrierColor: Colors.black.withOpacity(0.8),
+      context: context,
+      builder: (
+        BuildContext context,
+      ) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Stack(
+              children: [
+                ImgyFullScreen(widget: widget),
+                ImgyHeader(
+                  widget: widget,
+                  status: imageStatus,
+                  sharing: sharingImage,
+                  onSave: saveImage,
+                  onShare: shareImage,
+                ),
+                if (widget.description != null)
+                  ImgyDescription(
+                    context: context,
+                    widget: widget,
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return render();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    if (widget.enableFullScreen) {
+      return GestureDetector(
+        key: const Key('imgy_gesture_detector'),
+        onTap: () {
+          openImage(context);
+        },
+        child: ImgyThumbnail(widget: widget),
+      );
+    }
+
+    return ImgyThumbnail(widget: widget);
   }
 }

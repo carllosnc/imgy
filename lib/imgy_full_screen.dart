@@ -1,7 +1,17 @@
-part of './imgy.dart';
+import 'package:flutter/material.dart';
+import './imgy.dart';
+import './imgy_utils.dart';
 
-extension ImgyFullScreen on ImgyState {
-  Image fullScreenNetWorkImage() {
+class ImgyFullScreenWebImage extends StatelessWidget {
+  const ImgyFullScreenWebImage({
+    super.key,
+    required this.widget,
+  });
+
+  final Imgy widget;
+
+  @override
+  Widget build(BuildContext context) {
     return Image.network(
       widget.fullSrc,
       fit: BoxFit.cover,
@@ -19,15 +29,20 @@ extension ImgyFullScreen on ImgyState {
       },
     );
   }
+}
 
-  fullScreenAssetImage() {
-    return Image.asset(
-      widget.fullSrc,
-      fit: BoxFit.cover,
-    );
-  }
+class ImgyFullScreen extends StatelessWidget {
+  const ImgyFullScreen({
+    super.key,
+    required this.widget,
+  });
 
-  Positioned imagePreview() {
+  final Imgy widget;
+
+  @override
+  Widget build(BuildContext context) {
+    final GlobalKey globalKey = GlobalKey();
+
     return Positioned.fill(
       child: Stack(
         key: const Key('imgy_full_screen_container'),
@@ -53,9 +68,9 @@ extension ImgyFullScreen on ImgyState {
                     key: globalKey,
                     child: Container(
                       color: Colors.transparent,
-                      child: checkFullSrc()
-                          ? fullScreenNetWorkImage()
-                          : fullScreenAssetImage(),
+                      child: checkFullSrc(widget.fullSrc)
+                          ? ImgyFullScreenWebImage(widget: widget)
+                          : Image.asset(widget.fullSrc, fit: BoxFit.cover),
                     ),
                   ),
                 ),
