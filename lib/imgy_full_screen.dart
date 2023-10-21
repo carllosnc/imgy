@@ -16,16 +16,16 @@ class ImgyFullScreenWebImage extends StatelessWidget {
       widget.fullSrc,
       fit: BoxFit.cover,
       loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) {
+        if (loadingProgress != null) {
+          return const Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.white,
+            ),
+          );
+        } else {
           return child;
         }
-
-        return const Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-        );
       },
     );
   }
