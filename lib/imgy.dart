@@ -30,7 +30,8 @@ class Imgy extends StatefulWidget {
   final double width;
   final double height;
   final double borderWidth;
-  final double rounded;
+  final BorderRadius borderRadius;
+  final BorderRadius? borderRadiusInside;
   final bool canShare;
   final bool canSave;
   final bool enableFullScreen;
@@ -43,7 +44,8 @@ class Imgy extends StatefulWidget {
     this.borderColor = Colors.transparent,
     this.placeholderColor = Colors.transparent,
     this.description,
-    this.rounded = 0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(0)),
+    this.borderRadiusInside,
     this.padding = 0,
     this.borderWidth = 0,
     this.width = 100,
