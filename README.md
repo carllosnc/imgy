@@ -1,7 +1,6 @@
 # IMGY
 
-
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![Static Badge](https://img.shields.io/badge/Flutter_package-blue)
 [![Imgy](https://github.com/C4co/imgy/actions/workflows/dart.yml/badge.svg)](https://github.com/C4co/imgy/actions/workflows/dart.yml)
 
 
@@ -9,7 +8,7 @@
 | --------------------------------------- |
 | <img src="./example.gif" width={350} /> |
 
-## Features
+## **Features**
  - Preview and full screen
  - Fade in effect
  - Description
