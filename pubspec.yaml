@@ -1,10 +1,10 @@
 name: imgy
 description: Flutter image component
-version: 0.0.9
+version: 0.0.10
 homepage:
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: '>=3.2.3 <4.0.0'
   flutter: '>=3.3.0'
 
 dependencies:
