@@ -127,7 +127,14 @@ class ImgyState extends State<Imgy> {
           builder: (BuildContext context, StateSetter setState) {
             return Stack(
               children: [
-                ImgyFullScreen(widget: widget),
+                Positioned.fill(
+                  child: RepaintBoundary(
+                    key: globalKey,
+                    child: ImgyFullScreen(
+                      widget: widget,
+                    ),
+                  ),
+                ),
                 ImgyHeader(
                   widget: widget,
                   status: imageStatus,
