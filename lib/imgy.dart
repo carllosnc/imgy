@@ -61,61 +61,6 @@ class Imgy extends StatefulWidget {
 }
 
 class ImgyState extends State<Imgy> {
-  final GlobalKey globalKey = GlobalKey();
-
-  ImageStatus imageStatus = ImageStatus.notSaved;
-  bool sharingImage = false;
-
-  shareImage() async {
-    setState(() {
-      sharingImage = true;
-    });
-
-    var result = await captureWidget();
-
-    await Share.shareXFiles([
-      XFile.fromData(
-        result,
-        name: randomString(10),
-        mimeType: 'image/png',
-      )
-    ]);
-
-    setState(() {
-      sharingImage = false;
-    });
-  }
-
-  Future<Uint8List> captureWidget() async {
-    final RenderRepaintBoundary boundary = globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
-
-    final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-
-    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-
-    final Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-    return pngBytes;
-  }
-
-  saveImage() async {
-    setState(() {
-      imageStatus = ImageStatus.saving;
-    });
-
-    Uint8List bytes = (await NetworkAssetBundle(Uri.parse(widget.fullSrc)).load(widget.fullSrc)).buffer.asUint8List();
-
-    await ImageGallerySaver.saveImage(
-      bytes,
-      name: randomString(7),
-      quality: 100,
-    );
-
-    setState(() {
-      imageStatus = ImageStatus.saved;
-    });
-  }
-
   Future<dynamic> openImage(BuildContext context) {
     return showDialog(
       barrierColor: Colors.black.withOpacity(0.8),
@@ -123,8 +68,61 @@ class ImgyState extends State<Imgy> {
       builder: (
         BuildContext context,
       ) {
+        ImageStatus imageStatus = ImageStatus.notSaved;
+        bool sharingImage = false;
+        bool saveCondition = checkFullSrc(widget.fullSrc) && widget.canSave && (imageStatus == ImageStatus.notSaved);
+        bool shareCondition = widget.canShare && (sharingImage == false);
+
         return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
+          builder: (BuildContext context, StateSetter insideState) {
+            final GlobalKey globalKey = GlobalKey();
+
+            Future<Uint8List> captureWidget() async {
+              final RenderRepaintBoundary boundary = globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+              final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+              final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+              final Uint8List pngBytes = byteData!.buffer.asUint8List();
+              return pngBytes;
+            }
+
+            shareImage() async {
+              insideState(() {
+                sharingImage = true;
+              });
+
+              var result = await captureWidget();
+
+              await Share.shareXFiles([
+                XFile.fromData(
+                  result,
+                  name: randomString(10),
+                  mimeType: 'image/png',
+                )
+              ]);
+
+              insideState(() {
+                sharingImage = false;
+              });
+            }
+
+            saveImage() async {
+              insideState(() {
+                imageStatus = ImageStatus.saving;
+              });
+
+              Uint8List bytes = (await NetworkAssetBundle(Uri.parse(widget.fullSrc)).load(widget.fullSrc)).buffer.asUint8List();
+
+              await ImageGallerySaver.saveImage(
+                bytes,
+                name: randomString(7),
+                quality: 100,
+              );
+
+              insideState(() {
+                imageStatus = ImageStatus.saved;
+              });
+            }
+
             return Stack(
               children: [
                 Positioned.fill(
@@ -135,12 +133,73 @@ class ImgyState extends State<Imgy> {
                     ),
                   ),
                 ),
-                ImgyHeader(
-                  widget: widget,
-                  status: imageStatus,
-                  sharing: sharingImage,
-                  onSave: saveImage,
-                  onShare: shareImage,
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                      key: const Key('imgy_full_screen_header'),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            key: const Key('imgy_full_screen_close'),
+                            color: Colors.red,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Wrap(
+                            spacing: 10,
+                            children: [
+                              if (sharingImage) const ImgyLoading(),
+                              if (shareCondition && !sharingImage)
+                                IconButton(
+                                  key: const Key('imgy_full_screen_share'),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    shareImage();
+                                  },
+                                  icon: const Icon(
+                                    Icons.share,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              if (imageStatus == ImageStatus.saving) const ImgyLoading(),
+                              if (saveCondition && imageStatus == ImageStatus.notSaved)
+                                IconButton(
+                                  key: const Key('imgy_full_screen_download'),
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    saveImage();
+                                  },
+                                  icon: const Icon(
+                                    Icons.download,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              if (imageStatus == ImageStatus.saved)
+                                IconButton(
+                                  key: const Key('imgy_full_screen_check'),
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 if (widget.description != null)
                   ImgyDescription(
