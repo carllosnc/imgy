@@ -6,7 +6,7 @@
 
 | Example                                 |
 | --------------------------------------- |
-| <img src="./example.gif" width="300" /> |
+| <img src="./example.gif" width="250" /> |
 
 ## **Features**
  - Preview and full screen
