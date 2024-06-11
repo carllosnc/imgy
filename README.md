@@ -25,7 +25,7 @@
 dependencies:
   imgy:
     git:
-      url: https://github.com/C4co/imgy.git
+      url: https://github.com/carllosnc/imgy.git
 ```
 
 ## Usage
