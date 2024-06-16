@@ -2,7 +2,7 @@
 
 ![Static Badge](https://img.shields.io/badge/Flutter_package-blue)
 [![Imgy](https://github.com/carllosnc/imgy/actions/workflows/dart.yml/badge.svg)](https://github.com/carllosnc/imgy/actions/workflows/dart.yml)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/7cd9f23454824a98a958210cec900aeb)](https://app.codacy.com/gh/C4co/imgy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c1c0f7fdc577455d92af7f02cd308c80)](https://app.codacy.com/gh/carllosnc/imgy/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 | Example                                 |
 | --------------------------------------- |
