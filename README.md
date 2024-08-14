@@ -64,6 +64,12 @@ Imgy(
 | `canShare`          | `bool`   | `true`               | support to share image                    |
 | `tapOnImageToClose` | `bool`   | `true`               | close fullscreen view image when tap over |
 
+## Showcase
+
+<img src="./imgy_showcase.png" />
+
+Datacinte is movie catalog app made with Flutter that uses Imgy package to show, save and share movies posters. Download the app from [Google Play](https://play.google.com/store/apps/details?id=cnc.datacine)
+
 ---
 
 Carlos Costa 🖼 2023
