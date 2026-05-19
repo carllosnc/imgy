@@ -7,18 +7,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:imgy/imgy_full_screen.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 
 import 'imgy_utils.dart';
 import 'imgy_description.dart';
 import 'imgy_thumbnail.dart';
 import 'imgy_header.dart';
 
-enum ImageStatus {
-  saving,
-  saved,
-  notSaved,
-}
+enum ImageStatus { saving, saved, notSaved }
 
 class Imgy extends StatefulWidget {
   final String src;
@@ -63,11 +59,9 @@ class Imgy extends StatefulWidget {
 class ImgyState extends State<Imgy> {
   Future<dynamic> openImage(BuildContext context) {
     return showDialog(
-      barrierColor: Colors.black.withOpacity(0.8),
+      barrierColor: Colors.black.withValues(alpha: 0.8),
       context: context,
-      builder: (
-        BuildContext context,
-      ) {
+      builder: (BuildContext context) {
         ImageStatus imageStatus = ImageStatus.notSaved;
         bool sharingImage = false;
         bool saveCondition = checkFullSrc(widget.fullSrc) && widget.canSave && (imageStatus == ImageStatus.notSaved);
@@ -92,13 +86,7 @@ class ImgyState extends State<Imgy> {
 
               var result = await captureWidget();
 
-              await Share.shareXFiles([
-                XFile.fromData(
-                  result,
-                  name: randomString(10),
-                  mimeType: 'image/png',
-                )
-              ]);
+              await Share.shareXFiles([XFile.fromData(result, name: randomString(10), mimeType: 'image/png')]);
 
               insideState(() {
                 sharingImage = false;
@@ -112,11 +100,7 @@ class ImgyState extends State<Imgy> {
 
               Uint8List bytes = (await NetworkAssetBundle(Uri.parse(widget.fullSrc)).load(widget.fullSrc)).buffer.asUint8List();
 
-              await ImageGallerySaver.saveImage(
-                bytes,
-                name: randomString(7),
-                quality: 100,
-              );
+              await ImageGallerySaverPlus.saveImage(bytes, name: randomString(7), quality: 100);
 
               insideState(() {
                 imageStatus = ImageStatus.saved;
@@ -128,9 +112,7 @@ class ImgyState extends State<Imgy> {
                 Positioned.fill(
                   child: RepaintBoundary(
                     key: globalKey,
-                    child: ImgyFullScreen(
-                      widget: widget,
-                    ),
+                    child: ImgyFullScreen(widget: widget),
                   ),
                 ),
                 Positioned(
@@ -151,10 +133,7 @@ class ImgyState extends State<Imgy> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ),
+                            icon: const Icon(Icons.close, color: Colors.white),
                           ),
                           Wrap(
                             spacing: 10,
@@ -167,10 +146,7 @@ class ImgyState extends State<Imgy> {
                                   onPressed: () {
                                     shareImage();
                                   },
-                                  icon: const Icon(
-                                    Icons.share,
-                                    color: Colors.white,
-                                  ),
+                                  icon: const Icon(Icons.share, color: Colors.white),
                                 ),
                               if (imageStatus == ImageStatus.saving) const ImgyLoading(),
                               if (saveCondition && imageStatus == ImageStatus.notSaved)
@@ -180,19 +156,13 @@ class ImgyState extends State<Imgy> {
                                   onPressed: () {
                                     saveImage();
                                   },
-                                  icon: const Icon(
-                                    Icons.download,
-                                    color: Colors.white,
-                                  ),
+                                  icon: const Icon(Icons.download, color: Colors.white),
                                 ),
                               if (imageStatus == ImageStatus.saved)
                                 IconButton(
                                   key: const Key('imgy_full_screen_check'),
                                   onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                  ),
+                                  icon: const Icon(Icons.check, color: Colors.white),
                                 ),
                             ],
                           ),
@@ -201,11 +171,7 @@ class ImgyState extends State<Imgy> {
                     ),
                   ),
                 ),
-                if (widget.description != null)
-                  ImgyDescription(
-                    context: context,
-                    widget: widget,
-                  ),
+                if (widget.description != null) ImgyDescription(context: context, widget: widget),
               ],
             );
           },
@@ -216,10 +182,7 @@ class ImgyState extends State<Imgy> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     if (widget.enableFullScreen) {
       return GestureDetector(
